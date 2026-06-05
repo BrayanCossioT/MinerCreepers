@@ -1,0 +1,127 @@
+==========================================
+  MINER CREEPERS - NOTA DE CONTEXTO
+  Creado: 31/Mayo/2026
+==========================================
+
+PROYECTO: Miner Creepers
+MOD ID: minercreepers
+PAQUETE: com.brayan.minercreepers
+MINECRAFT: 26.1.2 (Fabric)
+JAVA: 25
+GRADLE: 9.4.1
+
+==========================================
+¿QUÉ HACE EL MOD?
+==========================================
+Agrega 11 variantes de creeper que al explotar convierten
+piedra (stone/deepslate en Overworld, netherrack/blackstone/basalt
+en Nether) en la mena correspondiente segun el tipo.
+
+Además, el daño escala según la rareza del mineral.
+
+==========================================
+LISTA DE CREEPERS (11 total)
+==========================================
+OVERWORLD (spawn por bioma):
+- coal_creeper (montañas, peso 15, daño x0.5)
+- iron_creeper (llanuras, peso 12, daño x0.7)
+- copper_creeper (playa, peso 12, daño x0.7)
+- gold_creeper (badlands, peso 8, daño x1.0)
+- redstone_creeper (cualquier overworld, peso 8, daño x1.0)
+- lapis_creeper (montañas, peso 7, daño x1.2)
+- diamond_creeper (subterráneo, peso 3, daño x2.0)
+- emerald_creeper (colinas extremas, peso 3, daño x2.0)
+
+NETHER (solo en el Nether):
+- quartz_creeper (peso 10, daño x0.8)
+- nether_gold_creeper (peso 8, daño x1.0)
+- ancient_debris_creeper (Y<20, peso 1, daño x3.5, MUY RARO)
+
+==========================================
+CARACTERÍSTICAS IMPLEMENTADAS
+==========================================
+[✓] 11 entidades personalizadas
+[✓] 11 huevos generadores
+[✓] Conversión de stone/deepslate/netherrack/blackstone/basalt a menas
+[✓] Daño escalado por rareza del mineral
+[✓] Spawn por bioma (Overworld) y solo Nether (Nether)
+[✓] Ancient Debris Creeper: raro, solo Y<20
+[✓] Partículas de colores al explotar (DustParticleEffect)
+[✓] Brillo (glowing) con el color del mineral
+[✓] Config JSON auto-generado (config/minercreepers_config.json)
+[✓] Opción natural_only (solo transformar bloques naturales)
+[✓] Traducciones EN y ES
+[✓] Texturas placeholder (creeper vanilla + huevo vanilla)
+[✓] Icono del mod
+
+==========================================
+ESTADO ACTUAL (lo último que pasó)
+==========================================
+- El build FALLA con: "Could not find method officialMojangMappings()"
+- El plugin fabric-loom 1.15.5 necesita las mappings oficiales de Mojang
+- La solución correcta es usar en build.gradle dentro del bloque "loom { }":
+    loom {
+        officialMojangMappings()
+    }
+  o en dependencies:
+    mappings loom.layered { officialMojangMappings() }
+
+- También COMPROBAR si existe la version 1.15.6+ de fabric-loom
+  que soporte mejor Minecraft 26.1 (unobfuscated)
+- Si no funciona, probar con:
+    plugins {
+        id 'fabric-loom' version '1.16-SNAPSHOT'
+    }
+  (versiones snapshot pueden tener mejor soporte para 26.1)
+
+==========================================
+ARCHIVOS DEL PROYECTO
+==========================================
+build.gradle          <- Configuración de Gradle (hay que arreglar mappings)
+gradle.properties     <- Versiones de Minecraft, Loader y API
+settings.gradle       <- Configuración del proyecto
+NOTA_DE_CONTEXTO.txt  <- ESTE ARCHIVO
+
+src/main/java/com/brayan/minercreepers/
+  MinerCreepersMod.java         <- Inicializador principal
+  MinerCreepersClient.java      <- Inicializador cliente (renderers)
+  config/
+    MinerConfig.java             <- Clase de configuración
+    ConfigManager.java           <- Carga/guarda JSON
+  entity/
+    MinerCreeperType.java        <- Enum con los 11 tipos
+    MinerCreeperEntity.java      <- Entidad base del creeper
+    MinerExplosion.java          <- Lógica de conversión de bloques
+    ModEntities.java             <- Registro de entidades y spawn
+    client/
+      MinerCreeperEntityRenderer.java  <- Renderer con textura personalizada
+  item/
+    ModItems.java                <- Registro de huevos generadores
+
+src/main/resources/
+  fabric.mod.json
+  assets/minercreepers/
+    icon.png
+    lang/en_us.json
+    lang/es_es.json
+    textures/
+      entity/miner_creeper/     <- 11 PNGs del creeper
+      item/                     <- 11 PNGs del huevo
+      REFERENCIA_CREEPERS_Y_HUEVOS.txt
+  config/
+    minercreepers_default_config.json
+
+==========================================
+PASOS SIGUIENTES (cuando se retome)
+==========================================
+1. ARREGLAR build.gradle - agregar mappings correctas
+2. Compilar con "gradlew build"
+3. Probar en Minecraft 26.1.2
+4. (Opcional) El usuario puede reemplazar las texturas PNG
+   cuando tenga las definitivas
+
+==========================================
+CONTACTO
+==========================================
+Coder es el asistente que creó este proyecto.
+Usuario: Brayan
